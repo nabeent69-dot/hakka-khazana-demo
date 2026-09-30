@@ -34,10 +34,8 @@ footer{display:grid;grid-template-columns:1fr auto auto;gap:30px;align-items:cen
 
 <section class="hero" id="top">
   <div class="hero-sticky">
-    <video id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="https://images.pexels.com/videos/4926171/free-video-4926171.jpg">
-      <source src="https://videos.pexels.com/video-files/4926171/4926171-hd_1920_1080_30fps.mp4" type="video/mp4">
-      <source src="https://videos.pexels.com/video-files/4926171/4926171-hd_1280_720_30fps.mp4" type="video/mp4">
-      <source src="https://videos.pexels.com/video-files/4926171/4926171-uhd_4096_2160_30fps.mp4" type="video/mp4">
+    <video id="heroVideo" autoplay muted loop playsinline preload="auto">
+      <source src="./assets/hero-wok.mp4?v=3" type="video/mp4">
     </video>
   </div>
   <div class="hero-copy">
@@ -91,7 +89,7 @@ footer{display:grid;grid-template-columns:1fr auto auto;gap:30px;align-items:cen
 <footer><div class="brand"><span class="mark">HK</span><span>HAKKA KHAZANA</span></div><p>Indian · Hakka Chinese · Nepali</p><p>Concept demo only</p></footer>
 <div class="demo-badge">Concept Demo</div>
 <script>
-(()=>{const v=document.getElementById('heroVideo');if(!v)return;v.muted=true;v.addEventListener('error',()=>{v.style.background="center/cover no-repeat url('https://images.pexels.com/videos/4926171/free-video-4926171.jpg')"});const p=v.play();if(p&&p.catch)p.catch(()=>{});})();
+(()=>{const v=document.getElementById('heroVideo');if(!v)return;v.muted=true;v.addEventListener('loadeddata',()=>{v.classList.add('ready')});const p=v.play();if(p&&p.catch)p.catch(()=>{});})();
 </script>
 </body>
 </html>
