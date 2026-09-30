@@ -23,14 +23,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Prepare real cooking hero video
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          DIRECT="https://videos.pexels.com/video-files/4926171/4926171-uhd_4096_2160_30fps.mp4"
+          FALLBACK="https://www.pexels.com/download/video/4926171/"
+          curl -L --fail --retry 3 --connect-timeout 20             -A "Mozilla/5.0" -e "https://www.pexels.com/"             "$DIRECT" -o /tmp/hero-source.mp4 ||           curl -L --fail --retry 3 --connect-timeout 20             -A "Mozilla/5.0" -e "https://www.pexels.com/"             "$FALLBACK" -o /tmp/hero-source.mp4
+
+          test -s /tmp/hero-source.mp4
+
+          if command -v ffmpeg >/dev/null 2>&1; then
+            ffmpeg -y -i /tmp/hero-source.mp4 -an               -vf "scale=-2:720"               -c:v libx264 -preset fast -crf 24               -movflags +faststart assets/hero-wok.mp4
+          else
+            cp /tmp/hero-source.mp4 assets/hero-wok.mp4
+          fi
+
+          test -s assets/hero-wok.mp4
+          ls -lh assets/hero-wok.mp4
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
+
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
+
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
